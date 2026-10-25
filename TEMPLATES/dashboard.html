@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Injection Security Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #243247;
+        }
+
+        header {
+            background: #17365d;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dce8f7;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px #0000000d;
+            margin-bottom: 20px;
+        }
+
+        .summary .card {
+            margin-bottom: 0;
+            border-top: 4px solid #2878c8;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .value {
+            font-size: 25px;
+            font-weight: bold;
+            color: #176b43;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 11px 18px;
+            background: #1769aa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #104d80;
+        }
+
+        .message {
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 5px;
+            background: #e8f2ff;
+            overflow-wrap: anywhere;
+        }
+
+        .warning {
+            background: #fff0e8;
+            color: #a33c12;
+        }
+
+        .safe {
+            background: #e4f7e9;
+            color: #176b43;
+        }
+
+        ul {
+            line-height: 1.9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 0 12px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SQL Injection Security Dashboard</h1>
+    <p>DBMS Assignment | Detection, Prevention and Database Analysis</p>
+</header>
+
+<main>
+
+    <!-- Database Summary -->
+    <section class="summary">
+
+        <div class="card">
+            <h2>Database Status</h2>
+            <p class="value">{{ database_status }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Total Users</h2>
+            <p class="value">{{ user_count }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Database Type</h2>
+            <p class="value">SQLite</p>
+        </div>
+
+    </section>
+
+    <!-- Secure Login -->
+    <section class="card">
+        <h2>Secure Login Test</h2>
+        <p>Test authentication using parameterized SQL queries.</p>
+
+        <form method="POST">
+            <input type="hidden" name="action" value="login">
+
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+
+            <button type="submit">Test Login</button>
+        </form>
+
+        {% if login_message %}
+            <div class="message">{{ login_message }}</div>
+        {% endif %}
+    </section>
+
+    <!-- SQL Injection Detector -->
+    <section class="card">
+        <h2>SQL Injection Pattern Detector</h2>
+        <p>Enter a sample string to check for suspicious SQL patterns.</p>
+
+        <form method="POST">
+            <input type="hidden" name="action" value="detect">
+
+            <label for="sample_input">Sample Input</label>
+            <input
+                type="text"
+                id="sample_input"
+                name="sample_input"
+                placeholder="Enter a username or test pattern"
+                required
+            >
+
+            <button type="submit">Detect Pattern</button>
+        </form>
+
+        {% if detection_message %}
+            <div class="message {{ detection_status }}">
+                {{ detection_message }}
+            </div>
+        {% endif %}
+    </section>
+
+    <!-- Database Schema -->
+    <section class="card">
+        <h2>Database Schema</h2>
+        <p>Table: <strong>users</strong></p>
+
+        {% if columns %}
+            <ul>
+                {% for column in columns %}
+                    <li>{{ column }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Database schema information is unavailable.</p>
+        {% endif %}
+    </section>
+
+</main>
+
+<footer>
+    <p>SQL Injection Project | DBMS | Educational Demonstration</p>
+</footer>
+
+</body>
+</html>
